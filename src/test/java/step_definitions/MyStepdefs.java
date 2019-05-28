@@ -119,13 +119,10 @@ public class MyStepdefs {
     public void GotoMoviesthenMovieNavigator() throws Throwable {
         Homepage homepage = new Homepage();
         Actions action = new Actions(driver);
-        System.out.println("1");
         WebElement element = (new WebDriverWait(driver, 1, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.FilmsButton));
         action.moveToElement(element).build().perform();
-        System.out.println("2");
         element = (new WebDriverWait(driver, 1, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.NavigateFilms));
         element.click();
-        System.out.println("3");
     }
 
     @Then("^Fill in the search parameters$")
