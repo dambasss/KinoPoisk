@@ -129,9 +129,10 @@ public class MyStepdefs {
     }
 
     @Then("^Fill in the search parameters$")
-    public void Fillinthesearchparameters() throws Throwable {
+    public void FillInTheSearchParameters() throws Throwable {
         FilmsNavigate filmsNavigate = new FilmsNavigate();
-        System.out.println("3");
-
+        System.out.println("1");
+        country
+  
     }
 }
