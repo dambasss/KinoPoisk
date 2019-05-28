@@ -130,6 +130,5 @@ public class MyStepdefs {
         FilmsNavigate filmsNavigate = new FilmsNavigate();
         System.out.println("1");
         country
-  
     }
 }
