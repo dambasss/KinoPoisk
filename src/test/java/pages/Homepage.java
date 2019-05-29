@@ -1,10 +1,12 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
 
 public class Homepage {
 
     //Before LogIn
+    //@FindBy
     public static By EnterButton = By.xpath("//button[.='Войти']");
     public static By SearchFilms = By.xpath("//a[@data-tooltip='Расширенный поиск']");
     public static By NavigateFilms = By.xpath("//li/a[.='Навигатор по фильмам']");

@@ -1,6 +1,8 @@
 package step_definitions;
 
 import Utils.DriverUtil;
+import Utils.WebElementUtill;
+import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -8,19 +10,29 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import pages.CheckFilms;
 import pages.FilmsNavigate;
 import pages.loginpage;
 import pages.Homepage;
 //import ru.yandex.qatools.allure.annotations.Step;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import static Utils.WebElementUtill.ClickElement;
+import static Utils.WebElementUtill.SelectFromList;
 import static pages.Homepage.CheckTitle;
 //import static Utils.WebElementUtill.takeScreenShot;
 
 public class MyStepdefs {
     public static WebDriver driver;
+
 
     @Before("@withdrawal")
     public void prepareData() {
@@ -119,16 +131,70 @@ public class MyStepdefs {
     public void GotoMoviesthenMovieNavigator() throws Throwable {
         Homepage homepage = new Homepage();
         Actions action = new Actions(driver);
-        WebElement element = (new WebDriverWait(driver, 1, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.FilmsButton));
+        WebElement element = (new WebDriverWait(driver, 3, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.FilmsButton));
         action.moveToElement(element).build().perform();
-        element = (new WebDriverWait(driver, 1, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.NavigateFilms));
+        element = (new WebDriverWait(driver, 3, 1000)).until(ExpectedConditions.elementToBeClickable(homepage.NavigateFilms));
         element.click();
     }
 
     @Then("^Fill in the search parameters$")
-    public void FillInTheSearchParameters() throws Throwable {
-        FilmsNavigate filmsNavigate = new FilmsNavigate();
-        System.out.println("1");
-        country
+    public void FillInTheSearchParameters(DataTable arg1) throws Throwable {
+        //FilmsNavigate filmsNavigate = new FilmsNavigate();
+        System.out.println("1 <Start>");
+            List<Map<String, String>> list = arg1.asMaps(String.class, String.class);
+            String a1,a2;
+        System.out.println("2 <country>");
+            ClickElement(driver, FilmsNavigate.country);
+            SelectFromList(driver,list.get(1).get("Namelink"),list.get(1).get("value"));
+        System.out.println("3 <janre>");
+            //ИСПРАВИТЬ Удалить ненужные переменные а1 а2 и подставить их значения в SelectFromList()
+            a1 = list.get(0).get("Namelink");
+            a2 = list.get(0).get("value");
+            ClickElement(driver, FilmsNavigate.genre);
+            SelectFromList(driver,a1,a2);                  //<-----------------------------------Сюда
+        System.out.println("4 <FROM years TO>");
+            //ИСПРАВИТЬ СТРОКУ НИЖЕ : вместо "1998" добавить            list.get(2).get("value")
+            driver.findElement(FilmsNavigate.datesMin).sendKeys("1998");
+            driver.findElement(FilmsNavigate.datesMax).sendKeys(list.get(3).get("value"));
+        System.out.println("5 <Rating>");
+            WebElementUtill.sendKeys(driver, FilmsNavigate.ratingMax,list.get(5).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.ratingMin,list.get(4).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.IMDbMax,list.get(7).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.IMDbMin,list.get(6).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.CriticMax,list.get(9).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.CriticMin,list.get(8).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.RatingPositiveReviewsMax,list.get(11).get("value") );
+            WebElementUtill.sendKeys(driver, FilmsNavigate.RatingPositiveReviewsMin,list.get(10).get("value") );
+        System.out.println("6 <Rating Slider>");
+            WebElement slider = driver.findElement(FilmsNavigate.AmountVotesSlider);
+            Actions move = new Actions(driver);
+            Action action = (Action) move.dragAndDropBy(slider, 143, 0).build();
+            action.perform();
+        System.out.println("7 <Rating MPAA and Age control>");
+            driver.findElement(FilmsNavigate.MPAArating).sendKeys(list.get(13).get("value"));
+            driver.findElement(FilmsNavigate.age).sendKeys(list.get(14).get("value"));
+        System.out.println("8 <Budget>");
+            driver.findElement(FilmsNavigate.budgetMin).sendKeys(list.get(15).get("value"));
+            driver.findElement(FilmsNavigate.budgetMax).sendKeys(list.get(16).get("value"));
+        System.out.println("8 <Cash fees>");
+            driver.findElement(FilmsNavigate.CassMin).sendKeys(list.get(17).get("value"));
+            driver.findElement(FilmsNavigate.CassMax).sendKeys(list.get(18).get("value"));
+            driver.findElement(FilmsNavigate.CassCountry).sendKeys(list.get(19).get("Namelink"));
+        System.out.println("<end>");
+        //Thread.sleep(10000);
     }
+
+    @Then("^Check for the number of films \"([^\"]*)\" in the popup window$")
+    public void Check_for_the_number_of_films_in_the_popup_window(String arg1) throws Throwable {
+        Thread.sleep(3000);
+        //CheckFilms checkFilms = new CheckFilms();
+        String AmountFilms = WebElementUtill.getText(driver,CheckFilms.NumberFilmSearch);
+        String AmountTest = (arg1+" фильм");
+
+        System.out.println(AmountFilms);
+        System.out.println(AmountTest);
+       // Assert.assertEquals(AmountFilms,AmountTest);
+    }
+
+
 }

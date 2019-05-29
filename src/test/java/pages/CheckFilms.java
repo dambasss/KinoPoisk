@@ -8,7 +8,7 @@ public class CheckFilms {
 //всплывающее окно
     public static By NumberFilmSearch = By.xpath("//a[@onclick=\"KP.navigator.loadResult()\"]");
     public static By ShowFilmsButton = By.xpath("//input[@onclick=\"KP.navigator.loadResult()\"][@value=\"показать фильмы\"]");
-
+//NEXT--------------->>>>>>>
     public static By country = By.xpath("//select[@id = 'country']");
     public static By fromYear = By.xpath("//select[@id = 'from_year']");
     public static By toYear = By.xpath("//select[@id = 'to_year']");
