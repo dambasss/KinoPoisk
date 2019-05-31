@@ -29,3 +29,5 @@ Scenario: Move to movie navigator and search movies by param
 |18|кассовые сборы до          |-||
 |19|страна для кассовых сборов |США|domestic|
   * Check for the number of films "1" in the popup window
+  * Press the button 'Search movie'
+  *

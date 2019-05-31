@@ -188,13 +188,44 @@ public class MyStepdefs {
     public void Check_for_the_number_of_films_in_the_popup_window(String arg1) throws Throwable {
         Thread.sleep(3000);
         //CheckFilms checkFilms = new CheckFilms();
-        String AmountFilms = WebElementUtill.getText(driver,CheckFilms.NumberFilmSearch);
-        String AmountTest = (arg1+" фильм");
-
-        System.out.println(AmountFilms);
-        System.out.println(AmountTest);
-       // Assert.assertEquals(AmountFilms,AmountTest);
+        String AmountFilms = WebElementUtill.getText(driver,CheckFilms.NumberFilmSearch).replaceAll("[^0-9]", "");
+        String AmountTest = (arg1);
+        System.out.println("Check number of films");
+        System.out.println("Needed : " + AmountTest);
+        System.out.println("Real   : " + AmountFilms.replaceAll("[^0-9]", ""));
+        //Узнать (т.к. он показывает только ужасти а хорошее- нет
+        Assert.assertEquals(AmountFilms,AmountTest);
     }
+
+   @Then("^Press the button 'Search movie'$")
+    public void Press_The_Button() throws Throwable {
+        Thread.sleep(3000);
+        CheckFilms checkFilms = new CheckFilms();
+        ClickElement(driver, checkFilms.ShowFilmsButton);
+        //Thread.sleep(10000);
+    }
+
+    @Then("^User logout$")
+    public void User_Logout() throws Throwable {
+        Homepage homepage = new Homepage();
+        WebElement element = driver.findElement(homepage.avatar);
+        element.click();
+        ClickElement(driver, homepage.Exitbutton);
+        //Thread.sleep(10000);
+    }
+
+    @Then("^Check performed logout$")
+    public void Check_Performed_Logout() throws Throwable {
+        //Homepage homepage = new Homepage();
+        try {
+            driver.findElement(Homepage.EnterButton);
+            System.out.println("Logout is Successful");
+        } catch (NoSuchElementException e) {
+            System.out.println("Nope");
+        }
+    }
+
+
 
 
 }
