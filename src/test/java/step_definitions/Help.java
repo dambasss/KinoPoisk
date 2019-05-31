@@ -202,6 +202,7 @@ public class MyStepdefs {
         CheckFilms checkFilms = new CheckFilms();
         ClickElement(driver, CheckFilms.ShowFilmsButton);
     }
+
     @Then("^User logout$")
     public void User_Logout() throws Throwable {
         Homepage homepage = new Homepage();
@@ -209,6 +210,15 @@ public class MyStepdefs {
         element.click();
         ClickElement(driver, homepage.Exitbutton);
 
+       if ((Boolean isPresent = driver.findElements(By.Homepage.EnterButton).size() > 0) = true){
+            System.out.println("Logout is Successful");
+        }
+       else{
+            System.out.println("Error: User is still logged in");
+        }
     }
+
+
+
 
 }
